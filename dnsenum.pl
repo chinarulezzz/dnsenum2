@@ -1,13 +1,13 @@
 #!/usr/bin/perl
 #
 #
-#	dnsenum.pl VERSION 1.3.0
+#	dnsenum VERSION 1.3.0
 #	This version:	- changed version number to the correct one
 #
-#	dnsenum.pl: multithread script to enumerate information on
+#	dnsenum: multithread script to enumerate information on
 #		a domain and to discover non-contiguous ip blocks.
 #
-#	1) Get the host's addresse.
+#	1) Get the host's address.
 #	2) Get the nameservers (threaded).
 #	3) get the MX record (threaded).
 #	4) Perform axfr queries on nameservers (threaded).
@@ -45,7 +45,7 @@
 #
 #	Special thanks to all perl developers.
 #
-#	please see perldoc dnsenum.pl for options and arguments
+#	please see perldoc dnsenum for options and arguments
 
 use strict;
 use warnings
@@ -80,7 +80,7 @@ my ( $domain,  $recur,     $table,   $extend_b, $extend_r );
 my ( $timeout, $delay,     $pages,   $ipcount,  $ipvalid ) = ( 10, 3, 5, 0, 0 );
 my ($output);
 my $writer;
-my $program     = 'dnsenum.pl';
+my $program     = 'dnsenum';
 my $default_dir = '/usr/share/dnsenum/dns.txt';
 my $string_gen  = String::Random->new;
 my $wildcards   = $string_gen->randpattern("cccccccccccc");
@@ -316,7 +316,7 @@ elsif ($verbose) {
     print STDOUT " good\n";
 }
 
-# (2) get the namservers for the domain
+# (2) get the nameservers for the domain
 printheader("Name Servers:\n");
 $packet = $res->query( $domain, 'NS' );
 if ($packet) {
@@ -490,7 +490,7 @@ undef %netranges;
 # (8) perform reverse lookups on netranges (class C or whois netranges)
 unless ($noreverse) {
 
-    #to save all valid subdomains discovred in
+    #to save all valid subdomains discovered in
     #the reverse lookup process
     $extend_r = 1
       if (
@@ -546,7 +546,7 @@ print STDOUT "\ndone.\n";
 exit(0);
 
 #--------------------------------------------------
-#Check if dns.txt file exists. Default on nonexistance
+#Check if dns.txt file exists. Default on nonexistence
 #to local dns.txt
 sub get_dns_list {
     my $default_dir = shift;
@@ -846,8 +846,8 @@ sub selectsubdomains {
                 }
             }
 
-            #perhaps for future additions to perform an extrem
-            #recursion to get the IP addresse of the NS servers
+            #perhaps for future additions to perform an extreme
+            #recursion to get the IP address of the NS servers
 
             # --- begin ---
             #next unless scalar @tmp;
@@ -1095,7 +1095,7 @@ sub whoisip {
                     #in $table after threads exit
                     #(see Net::Netmask and
                     #threads::shared and threads safe)
-                    #i am soure that there is a beter
+                    #i am sure that there is a better
                     #solution please excuse my ignorance
                     $netranges{ $block->desc } = 1;
 
@@ -1459,7 +1459,7 @@ sub usage {
     print STDOUT qq{Usage: $program [Options] <domain>
 [Options]:
 Note: If no -f tag supplied will default to /usr/share/dnsenum/dns.txt or
-the dns.txt file in the same directory as dnsenum.pl
+the dns.txt file in the same directory as dnsenum
 GENERAL OPTIONS:
   --dnsserver 	<server>
 			Use this DNS server for A, NS and MX queries.
@@ -1484,11 +1484,11 @@ BRUTE FORCE OPTIONS:
 	g		Update using only google scraping results.
 	r		Update using only reverse lookup results.
 	z		Update using only zonetransfer results.
-  -r, --recursion	Recursion on subdomains, brute force all discovred subdomains that have an NS record.
+  -r, --recursion	Recursion on subdomains, brute force all discovered subdomains that have an NS record.
 WHOIS NETRANGE OPTIONS:
   -d, --delay <value>	The maximum value of seconds to wait between whois queries, the value is defined randomly, default: 3s.
   -w, --whois		Perform the whois queries on c class network ranges.
-			 **Warning**: this can generate very large netranges and it will take lot of time to performe reverse lookups.
+			 **Warning**: this can generate very large netranges and it will take lot of time to perform reverse lookups.
 REVERSE LOOKUP OPTIONS:
   -e, --exclude	<regexp>
 			Exclude PTR records that match the regexp expression from reverse lookup results, useful on invalid hostnames.
@@ -1503,15 +1503,15 @@ __END__
 
 =head1 NAME
 
-dnsenum.pl: multithread script to enumerate information on a domain and to discover non-contiguous IP blocks.
+dnsenum -- multithread script to enumerate information on a domain and to discover non-contiguous IP blocks.
 
 =head1 VERSION
 
-dnsenum.pl version 1.3.0
+dnsenum version 1.3.0
 
 =head1 SYNOPSIS
 
-dnsenum.pl [options] <domain> -f dns.txt
+dnsenum [options] <domain> -f dns.txt
 
 =head1 DESCRIPTION
 
@@ -1526,7 +1526,7 @@ Operations:
 
 =item
 
-1) Get the host's addresse (A record).
+1) Get the host's address (A record).
 
 =item
 
@@ -1682,7 +1682,7 @@ Read subdomains from this file to perform brute force.
 
 =item B<-u>,  B<--update> B<<a|g|r|z>>
 
-Update the file specified with the -f switch with vaild subdomains.
+Update the file specified with the -f switch with valid subdomains.
 
 =back
 
@@ -1706,7 +1706,7 @@ B<-u> z		Update using only zonetransfer results.
 
 =item B<-r>,  B<--recursion>
 
-Recursion on subdomains, brute force all discovred subdomains
+Recursion on subdomains, brute force all discovered subdomains
  that have an NS record.
 
 =back
@@ -1724,7 +1724,7 @@ not concerned.
 
 =head2 WHOIS IP OPTIONS:
 
-Perform whois ip queries on c class netanges discovred from
+Perform whois ip queries on c class netranges discovered from
 previous operations.
 
 =over
@@ -1755,7 +1755,7 @@ whois servers will limit the number of connections.
 
 Perform the whois queries on c class network ranges.
  B<Warning>: this can generate very large netranges and it
- will take lot of time to performe reverse lookups.
+ will take lot of time to perform reverse lookups.
 
 =back
 
@@ -1765,7 +1765,7 @@ Perform the whois queries on c class network ranges.
 
 B<NOTES:>
 The whois query should recursively query the various whois
-providers untile it gets the more detailed information including
+providers until it gets the more detailed information including
 either TechPhone or OrgTechPhone by default. See: perldoc Net::Whois::IP.
 On errors the netrange will be a default c class /24.
 
@@ -1796,7 +1796,7 @@ Verbose mode will show all results.
 
 =head1 OUTPUT FILES
 
-Final non-contiguous ip blocks are writen to domain_ips.txt file.
+Final non-contiguous ip blocks are written to domain_ips.txt file.
 
 B<NOTES:>
 Final non-contiguous ip blocks are calculated :
@@ -1818,7 +1818,7 @@ google scraping and brute forcing).
 
 =head1 README
 
-dnsenum.pl: multithread script to enumerate information on a domain
+dnsenum: multithread script to enumerate information on a domain
 and to discover non-contiguous ip blocks.
 
 =head1 PREREQUISITES
